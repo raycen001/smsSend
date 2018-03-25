@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 /* GET index page. */
 router.get('/', function(req, res,next) {
-  res.render('index', { title: '华为SMS服务平台' });    // 到达此路径则渲染index文件，并传出title值供 index.html使用
+  res.render('index', { title: '海能达SMS服务平台' });    // 到达此路径则渲染index文件，并传出title值供 index.html使用
 });
 
 /* GET login page. */
