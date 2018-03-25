@@ -1,0 +1,46 @@
+{
+  "name": "jen-sfmc",
+  "version": "0.3.0",
+  "description": "A sample Node.js app using Express 4",
+  "engines": {
+    "node": "8.9.1"
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "express-session": "^1.15.6",
+    "fuel": "~0.4.1",
+    "fuel-soap": "^2.0.0",
+    "heroku-proxy": "^2.1.1",
+    "http-proxy-middleware": "^0.17.4",
+    "jquery": "^3.3.1",
+    "jsdom": "^11.6.2",
+    "jwt-simple": "~0.1.0",
+    "morgan": "^1.9.0",
+    "pg": "7.4.1",
+    "request": "~2.33.0",
+    "require": "~0.5.0"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^0.17.4",
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

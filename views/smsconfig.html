@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script data-main="/sfmcApp/activities/bridge-app/js/main.js" src="/sfmcApp/activities/bridge-app/js/require.js"></script>
+
+    <!--Styles-->
+    <link rel="stylesheet" type="text/css" href="/sfmcApp/activities/bridge-app/css/styles.css" />
+</head>
+<body>
+    <div id="step1" class="step">
+    <p><small id="version"></small></p>
+    <p/>
+    <h1>Jen-sfmc SMS Demo API Custom Activity</h1>
+    <p>This Activity created as SMS API.</p>
+    <p/>        
+        选择发送模式: 
+        <select id="selectPriority">
+            <option value="">Select an option</option>
+            <option value="1">邮件</option>
+            <option value="2">短信</option>
+        </select>
+    </div>
+    <div id="step2" class="step">
+        <p>Please review your settings.</p>
+        <p/>
+        Priority: <div id="showPriority"></div>
+    </div>
+    <p>
+        <a href="javascript:void(0)" id="login0">我要注销 </a>
+    </p>          
+</body>
+<script type="text/javascript">
+    var connection = new Postmonger.Session();
+    // $(document).ready(function() {
+        $("#login0").click(function(){ 
+            connection.trigger('updateButton', { button: 'next', enabled: false });
+
+            // $("#selectPriority").trigger("change"); 
+            // location.href = 'smsconfig';            
+        });
+    // });
+        
+    
+    </script>
+</html>
