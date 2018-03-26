@@ -76,6 +76,14 @@ exports.execute = function( req, res ) {
     console.log( "=================from execute method start=====================" );
     console.log( req.body );
     console.log( "=================from execute method end=====================" );
+    
+    // Log the req body into a txt log
+    var fs = require('fs');
+    var ws1 = fs.createWriteStream('errorlog.txt');
+    var dt = new Date();
+    ws1.write(new Buffer(dt + '***********' + req.body, 'utf-8'));
+    ws1.end();
+
     // logData( req );
     res.send( 200, 'Execute' );
     var endTime = +new Date();
