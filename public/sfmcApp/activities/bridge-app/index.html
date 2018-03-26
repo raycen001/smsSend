@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>腾讯云消息发送平台</title>
+    <title>海能达消息发送平台</title>
     <script data-main="js/main.js" src="js/require.js"></script>
 
     <!--Styles-->
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/styles.css" /> -->
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <!-- <link rel='stylesheet' href='/stylesheets/bootstrap-theme.css'> -->
     <style type="text/css">
         .background { 
             display: block; 
@@ -20,14 +24,14 @@
             left: 0; 
             z-index: 2000; 
         } 
-        .progressBar { 
+        .progressBar1 { 
             border: solid 2px #86A5AD; 
             background: white url(/sfmcApp/activities/bridge-app/images/loading.gif) no-repeat 10px 10px; 
         } 
-        .progressBar { 
+        .progressBar1 { 
             display: block; 
-            width: 160px; 
-            height: 28px; 
+            width: auto; 
+            height: auto; 
             position: fixed; 
             top: 50%; 
             left: 50%; 
@@ -39,59 +43,93 @@
             font-weight: bold; 
             position: absolute; 
             z-index: 2001; 
+        }
+        .mcFont {
+            font-family: "Salesforce Sans", Arial, sans-serif;
+            color: #2a426c;
         } 
+        
         </style>
 </head>
 <body>
     <div id="step1" class="step">
     <p><small id="version"></small></p>
     <p/>
-    <h1>腾讯云消息发送平台</h1>
-    <p/>        
-        选择发送模式: 
-        <select id="selectPriority">
-            <option value="">请选择模式</option>
-            <option value="1">邮件</option>
+    <h4 class="mcFont">海能达消息发送平台</h4>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button">选择发送模式</button>
+          </div>
+          <select class="custom-select" id="selectmodel">
+            <option selected value=''>请选择模式...</option>
             <option value="2">短信</option>
-        </select><br/>
-        选择数据来源:
-        <select id="selectPriority1">
-            
-        </select>
+          </select>
+        </div>
+        <input type="hidden" id="datasrc"/>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="button">选择数据来源</button>
+            </div>
+            <select class="custom-select" id="datasource">
+                <option selected value=''>请选择数据源...</option>
+            </select>
+        </div>
+        <input type="hidden" id="etmp"/>
+        <div class="input-group mb-3" id="section3" style="display: none">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="button">邮件模版</button>
+            </div>
+            <select class="custom-select" id="emailtemp">
+                <option selected value=''>邮件模版...</option>
+            </select>
+        </div>
+
+        <div class="input-group" id="section4" style="display: none">
+          <div class="input-group-prepend">
+            <span class="input-group-text">短信模版</span>
+          </div>
+          <textarea class="form-control" aria-label="With textarea" id="smstemp"></textarea>
+        </div>
+
+        
     </div>
-    <div id="step2" class="step">
-        <p>请查看您的配置.</p>
-        <p/>
-        发送模式: <div id="showPriority"></div>
+    <div id="step2" class="step mcFont" style="display: none">
+        <p >请查看您的配置.</p>
+        发送模式: <div id="showModel" style="font-size:12px;"></div>
+        <br/>
+        <br/>
+        请选择数据源: <div id="showDataSource" style="font-size:12px;"></div>
+        <br/>
+        <br/>
+        邮件模版: <div id="showEmail" style="font-size:12px;"></div>
+        <br/>
+        <br/>
+        短信模版: <div id="showSMS" style="font-size:12px;"></div>
     </div>
     <div id="background" class="background" style="display: none; "></div> 
-    <div id="progressBar" class="progressBar" style="display: none; ">数据加载中，请稍等...</div>          
-
-<script type="text/javascript" src="/sfmcApp/activities/bridge-app/vendor/jquery.min.js"></script>
+    <div id="progressBar" class="progressBar1 mcFont" style="display: none; ">数据加载中，请稍等...</div>          
+    
+<script type="text/javascript" src="/javascripts/jquery.js"></script>
 <script type="text/javascript">
     
     $(document).ready(function(){ 
-        var ajaxbg = $("#background,#progressBar");
-        $.ajax( 
-            {
-                url: "/soap/retrieve", 
-                dataType: "json", 
-                beforeSend:function()
-                {  
-                    ajaxbg.show(); 
-                },
-                success: function( data ) {
-                    console.info(data);
-                    $('#selectPriority1 option').remove();
-                    $("#selectPriority1").append("<option value=''>请选择数据源</option>");
-                    for(var i in data){
-                        // console.log(data[i]);
-                        $("#selectPriority1").append("<option value='"+data[i].key+"'>"+data[i].name+"</option>");
-                    }
-                    ajaxbg.hide();
-                 }
+        $("#selectmodel").change(function(){
+            console.log(this.value);
+            if (this.value == 2) {
+                $("#section3").hide();
+                $("#section4").show();
+            } else if(this.value == 1){
+                $("#section3").show();
+                $("#section4").hide();
+            } else {
+                $("#section3").hide();
+                $("#section4").hide();
             }
-        )
+        });
+        var ajaxbg = $("#background,#progressBar");
+        
+
+        
     });
 </script>
 </body>
