@@ -90,11 +90,11 @@ function initRetrieve(req,res) {
     var results = [];
   
     var options = {
-        filter: {
+        /*filter: {
             leftOperand: 'DataExtension.Name',
             operator: 'like',
-            rightOperand: 'CSB_%'
-        }
+            rightOperand: '%%'
+        }*/
 
     };
 
@@ -121,36 +121,6 @@ function initRetrieve(req,res) {
                 }
             }
             res.json(fields);
-            // var options = {};
-
-            // SoapClient.retrieve(
-            //     'DataExtensionObject[' + APIKeys.dataExtension + ']',
-            //     fields,
-            //     options,
-            //     function( err, response ) {
-            //         if ( err ) {
-            //             // error here
-            //             console.log( err );
-            //             return;
-            //         }
-
-            //         if(response.body.OverallStatus == 'OK')
-            //         {
-            //             for (var i = 0, len = response.body.Results.length; i < len; i++) {
-            //                 var obj = response.body.Results[i];
-
-            //                 var item = {};
-            //                 for(var k=0; k < obj.Properties.Property.length; k++)
-            //                 {
-            //                     item[obj.Properties.Property[k].Name] = obj.Properties.Property[k].Value;
-            //                 }
-            //                 results.push(item);
-            //             }
-            //         }
-            //         console.log(results);
-            //         res.send( 200, JSON.stringify(results) );
-            //     }
-            // );
         }
     );
 };
