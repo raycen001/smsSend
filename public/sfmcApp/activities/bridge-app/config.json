@@ -2,19 +2,25 @@
     "workflowApiVersion": "1.1", 
     "configurationArguments": {
         "save": {
-            "url": "https://damp-ocean-68990.herokuapp.com/sfmcApp/activities/bridge-app/save/", 
+            // "verb": "POST", 
+            "url": "https://jen-sfmc.herokuapp.com/sfmcApp/activities/bridge-app/save/", 
+            // "headers": "", 
             "body": "", 
             "useJwt": false
         }, 
         "validate": {
-            "url": "https://damp-ocean-68990.herokuapp.com/sfmcApp/activities/bridge-app/validate/", 
+            // "verb": "POST", 
+            "url": "https://jen-sfmc.herokuapp.com/sfmcApp/activities/bridge-app/validate/", 
+            // "headers": "", 
             "body": "", 
             "useJwt": false
         }, 
         "defaults": {}, 
-        "applicationExtensionKey": "CNuYHZM0nRagMz_RMBIwOIyrHmjBALOq9K7gICI7UY_--_tdtcBLyP0PQY4CFLW41wCTx8mGJWinWdBnaJUyMH3o6JIQK8qdSofVDevntFat_tCNynyNz2RoP_xEzgY7u-aJpVfxze0OuSFvk5Wg7kiLjanoD3SqDI08TymQm62Cb1fL3URavfxIVpnXLclu1bVbIahuwFqOmYaFetSy0zbTLFDDYxg9yGLrBvXC_aOcf4rVHNDGlyC8vv6YLQ2", 
+        "applicationExtensionKey": "quJw2wUP0wkUOSACyVhk9HfTBweWAjcIgyvNY-fGCBbW1EFCqEOKZDPlMUIOuaaXae3w-vnEoQf7Vv0Ssz2UR-2eoNhjV5N3NaehzhRsMV-6AQkvZdKHozcWpe87tkX76qBOkq3XDMBqyZ1U4FLJ51hynfBVP38IskUeDvEMMCGDuaURqR7L8_utDbPh6xnF5jk4TTzdE7cG3UBN05zAYfUXwZKSH5Zl8BAt1AvwIcqJT5HFbn837DSbSBcA5g2", 
         "publish": {
-            "url": "https://damp-ocean-68990.herokuapp.com/sfmcApp/activities/bridge-app/publish/", 
+            // "verb": "POST", 
+            "url": "https://jen-sfmc.herokuapp.com/sfmcApp/activities/bridge-app/publish/", 
+            // "headers": "", 
             "body": "", 
             "useJwt": false
         }
@@ -27,13 +33,13 @@
     "type": "REST", 
     "edit": {
         "width": 500, 
-        "url": "https://damp-ocean-68990.herokuapp.com/sfmcApp/activities/bridge-app/", 
+        "url": "https://jen-sfmc.herokuapp.com/sfmcApp/activities/bridge-app/", 
         "height": 400
     }, 
     "lang": {
         "en-US": {
-            "description": "Tencent SMS", 
-            "name": "Tencent SMS"
+            "description": "SMS/MMS Send", 
+            "name": "SMS/MMS Send"
         }
     }, 
     "arguments": {
@@ -47,7 +53,7 @@
                 }
             ], 
             "header": "", 
-            "url": "https://damp-ocean-68990.herokuapp.com/sfmcApp/activities/bridge-app/execute/", 
+            "url": "https://jen-sfmc.herokuapp.com/sfmcApp/activities/bridge-app/execute/", 
             "format": "json", 
             "useJwt": false, 
             "outArguments": []
