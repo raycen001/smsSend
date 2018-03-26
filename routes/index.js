@@ -96,8 +96,8 @@ module.exports = router;
 
 // exports.asset = function (req,res){
 //    var obj = {
-//         clientId:'eki1xghk0vixs3nk3u0362zj',
-//         clientSecret:'g7Kb0qsn7NHhzqgLD2uWFEQh'
+//         clientId:'7qbecky52s3x1x4x1pgxwvh9',
+//         clientSecret:'bCZ0YEgPK5akWiII6hPkMQ39'
 //     }
 //     request1.post(
 //         {
