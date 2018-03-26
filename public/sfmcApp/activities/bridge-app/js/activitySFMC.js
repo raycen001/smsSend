@@ -183,7 +183,7 @@ define( function( require ) {
 
         //this will be sent into the custom activity body within the inArguments array.
         // toJbPayload['arguments'].execute.inArguments.push({"priority": value});
-        // {{Contact.Attribute."Huawei_Free15Days_3DaysNotPaid_Opportunity"."customerid"}}
+        // {{Contact.Attribute."test_Free15Days_3DaysNotPaid_Opportunity"."customerid"}}
         var inArguments = [], param = '{{Contact.Attribute.<selectedDataExtension>.<selectedMode>}}';
         var selectmodel = $('#selectmodel').val();
         var priorityObj = {'model' : selectmodel};

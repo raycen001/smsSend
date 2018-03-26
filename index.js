@@ -163,7 +163,7 @@ router.route('/hub/:v/dataevents/key:obj_id/rowset')
             res.send(body);
         })
 })
-// get a request from the path Huawei_Opportunities_Test
+// get a request from the path test_Opportunities_Test
 .get(function(req, res) {
     var deKey = req.params.obj_id;
     var apiVersion = req.params.v;

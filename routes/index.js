@@ -15,7 +15,7 @@ router.route("/login").get(function(req,res){    // 到达此路径则渲染logi
     //get User info
      //这里的User就是从model中获取user对象，通过global.dbHandel全局方法（这个方法在app.js中已经实现)
     var username = 'admin';
-    var password = 'huawei@123!';
+    var password = 'test@123!';
     var uname = req.body.uname;
     var upwd = req.body.upwd;  //获取post上来的 data数据中 uname的值
     if(username != uname) {
