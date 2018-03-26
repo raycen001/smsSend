@@ -6,7 +6,7 @@ var fs = require('fs');
 var express = require('express');
 var http = require('http');
 var JWT = require('./lib/jwtDecoder');
-var path = require('path')
+var path = require('path');
 var request = require('request');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -18,10 +18,48 @@ var activitySOAP = require('./routes/sfmcSOAP');
 var pkgjson = require( './package.json' );
 var router = express.Router(); 
 var reqAgent = require('request');
+var schedule = require('node-schedule');
+var cache = require('./cache/Cache').createCache("LRU", 100 * 100 * 10); // LRU is the algorithm
+cache.set("test","hello",1000*60);
+
+var fetchEmails = require('./fetchEmailTmp/fetchEmailTmp').fetchEmailTmp();
+// fetchEmails.fetchTmpNames('templates');
+fetchEmails.get();
+/* how to use cache, the document is from https://github.com/hh54188/Node-Simple-Cache
+  cache.set("key", "value", 1000 * 60); //cache.set(key, value[, expire(millisecond)]); 
+  cache.get(key);
+  cache.clear()
+*/
 
 var PORT = process.env.PORT || 5000
 
 var app = express();
+// Register configs for the environments where the app functions
+// , these can be stored in a separate file using a module like config
+var APIKeys = {
+    appId           : '3108aea5-c917-4e17-91a3-d9a585562919',
+    clientId        : 'eki1xghk0vixs3nk3u0362zj',
+    clientSecret    : 'g7Kb0qsn7NHhzqgLD2uWFEQh',
+    appSignature    : 'quJw2wUP0wkUOSACyVhk9HfTBweWAjcIgyvNY-fGCBbW1EFCqEOKZDPlMUIOuaaXae3w-vnEoQf7Vv0Ssz2UR-2eoNhjV5N3NaehzhRsMV-6AQkvZdKHozcWpe87tkX76qBOkq3XDMBqyZ1U4FLJ51hynfBVP38IskUeDvEMMCGDuaURqR7L8_utDbPh6xnF5jk4TTzdE7cG3UBN05zAYfUXwZKSH5Zl8BAt1AvwIcqJT5HFbn837DSbSBcA5g2',
+    authUrl         : 'https://auth.exacttargetapis.com/v1/requestToken'
+};
+
+// Simple custom middleware
+function tokenFromJWT( req, res, next ) {
+    // Setup the signature for decoding the JWT
+    var jwt = new JWT({appSignature: APIKeys.appSignature});
+    
+    // Object representing the data in the JWT
+    var jwtData = jwt.decode( req );
+    console.log(jwtData);
+    // Bolt the data we need to make this call onto the session.
+    // Since the UI for this app is only used as a management console,
+    // we can get away with this. Otherwise, you should use a
+    // persistent storage system and manage tokens properly with
+    // node-fuel
+    req.session.token = jwtData.token;
+    next();
+}
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -50,6 +88,7 @@ app.use('/login',routes);
 app.use('/smsconfig',routes); // 即为为路径 /home 设置路由
 app.use('/logout',routes); // 即为为路径 /logout 设置路由
 app.get('/soap/retrieve',activitySOAP.retrieve);
+app.get('/soap/temps',activitySOAP.getEmailTmps);
 // app.get('/assets', routes.asset);
 // app.get('/testjs', routes.testjs);
 // Custom Hello World Activity Routes
@@ -123,6 +162,9 @@ router.route('/hub/:v/dataevents/key:obj_id/rowset')
 });
 
 app.use('/', router);
+app.get('/cache',function(req,res){
+    res.send(cache.get("test"));
+});
 app.get('/clearList', function( req, res ) {
     // The client makes this request to get the data
     activity.logExecuteData = [];
@@ -145,6 +187,13 @@ app.get('/getActivityData', function( req, res ) {
     }
 });
 app.listen(PORT, function(){
+  
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+    // var rule1 = new schedule.RecurrenceRule();  
+    // var times1    = [1,6,11,16,21,26,31,36,41,46,51,56];  
+    // rule1.second  = times1;  
+    // schedule.scheduleJob(rule1, function(){  
+    //     console.log('======schedule is running=========');  
+    // }); 
 });
 // app.listen(PORT, () => console.log(`Listening on ${ PORT }`));

@@ -1,9 +1,10 @@
 'use strict';
 var FuelSoap = require('fuel-soap');
+var fetchEmails = require('../fetchEmailTmp/fetchEmailTmp').fetchEmailTmp();
 
 var APIKeys = {
-    clientId        : '7qbecky52s3x1x4x1pgxwvh9',
-    clientSecret    : 'bCZ0YEgPK5akWiII6hPkMQ39',
+    clientId        : 'eki1xghk0vixs3nk3u0362zj',
+    clientSecret    : 'g7Kb0qsn7NHhzqgLD2uWFEQh',
     soapEndpoint    : 'https://webservice.s10.exacttarget.com/Service.asmx',
     dataExtension   : '',
     customerKey     : '',
@@ -18,6 +19,12 @@ var options = {
 };
 
 var SoapClient = new FuelSoap(options);
+
+exports.getEmailTmps = function( req, res ) {
+   var tmps = [];
+   tmps = fetchEmails.fetchTmpNames('templates');
+   res.json(tmps);
+};
 
 /*
  * POST Handler for /execute/ route of Activity.
@@ -114,6 +121,36 @@ function initRetrieve(req,res) {
                 }
             }
             res.json(fields);
+            // var options = {};
+
+            // SoapClient.retrieve(
+            //     'DataExtensionObject[' + APIKeys.dataExtension + ']',
+            //     fields,
+            //     options,
+            //     function( err, response ) {
+            //         if ( err ) {
+            //             // error here
+            //             console.log( err );
+            //             return;
+            //         }
+
+            //         if(response.body.OverallStatus == 'OK')
+            //         {
+            //             for (var i = 0, len = response.body.Results.length; i < len; i++) {
+            //                 var obj = response.body.Results[i];
+
+            //                 var item = {};
+            //                 for(var k=0; k < obj.Properties.Property.length; k++)
+            //                 {
+            //                     item[obj.Properties.Property[k].Name] = obj.Properties.Property[k].Value;
+            //                 }
+            //                 results.push(item);
+            //             }
+            //         }
+            //         console.log(results);
+            //         res.send( 200, JSON.stringify(results) );
+            //     }
+            // );
         }
     );
 };

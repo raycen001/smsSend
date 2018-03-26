@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 /* GET index page. */
 router.get('/', function(req, res,next) {
-  res.render('index', { title: '海能达SMS服务平台' });    // 到达此路径则渲染index文件，并传出title值供 index.html使用
+  res.render('index', { title: '华为SMS服务平台' });    // 到达此路径则渲染index文件，并传出title值供 index.html使用
 });
 
 /* GET login page. */
@@ -15,7 +15,7 @@ router.route("/login").get(function(req,res){    // 到达此路径则渲染logi
     //get User info
      //这里的User就是从model中获取user对象，通过global.dbHandel全局方法（这个方法在app.js中已经实现)
     var username = 'admin';
-    var password = 'hainengda@123!';
+    var password = 'huawei@123!';
     var uname = req.body.uname;
     var upwd = req.body.upwd;  //获取post上来的 data数据中 uname的值
     if(username != uname) {
@@ -132,10 +132,10 @@ module.exports = router;
 //                     //     "value": 'Jennie Content Builder'
 //                     // }
 //                     "query":{
-//                         "property":"name",
+//                         "property":"category.id",
 //                         "simpleOperator": "equals",
 //                         "valueType": "text",
-//                         "value": "Email Template Test2"
+//                         "value": "6886"
 //                     }
 //                 };
 
@@ -149,6 +149,7 @@ module.exports = router;
 //                     json: true
 //                 }, function(error, response, body){
 //                     console.log(body);
+                    
 //                     console.log(body.items[0].status);
 //                     console.log(body.items[0].category);
 //                     console.log(body.items[0].assetType);

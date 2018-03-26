@@ -71,12 +71,15 @@ exports.save = function( req, res ) {
  * POST Handler for /execute/ route of Activity.
  */
 exports.execute = function( req, res ) {
+    var beginTime = +new Date();
     // Data from the req and put it in an array accessible to the main app.
     console.log( "=================from execute method start=====================" );
     console.log( req.body );
     console.log( "=================from execute method end=====================" );
     // logData( req );
     res.send( 200, 'Execute' );
+    var endTime = +new Date();
+    console.log("executed time =======" +(endTime-beginTime)+"ms");
 };
 
 /*
