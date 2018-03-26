@@ -3,6 +3,7 @@ define( function( require ) {
     'use strict';
     
     var Postmonger = require( 'postmonger' );
+    // var fetchEmails = require('../fetchEmailTmp/fetchEmailTmp').fetchEmailTmp();
     var $ = require( 'vendor/jquery.min' );
 
 
@@ -11,12 +12,11 @@ define( function( require ) {
     var step = 1; 
     var tokens;
     var endpoints;
-    function initRetrieve(){
-    }
+
     $(window).ready(onRender);
 
     connection.on('initActivity', function(payload) {
-        var priority, selectedDE;
+        var priority, selectedDE, smsMsg, emailtmp;
 
         if (payload) {
             toJbPayload = payload;
@@ -31,25 +31,74 @@ define( function( require ) {
                 }
             }
             //oArgs.priority will contain a value if this activity has already been configured:
-            priority = oArgs.priority || toJbPayload['configurationArguments'].defaults.priority;
+            priority = oArgs.model || toJbPayload['configurationArguments'].defaults.model;
+            smsMsg = oArgs.smsMsg || toJbPayload['configurationArguments'].defaults.smsMsg;
+            emailtmp = oArgs.emailtmp || toJbPayload['configurationArguments'].defaults.emailtmp;
             selectedDE = oArgs.emailAddress.split('.')[2];
         }
         console.log("selectedDE - >  " + selectedDE);
         console.log(" - >  " + toJbPayload['configurationArguments'].defaults);
         console.log(toJbPayload);
-        initRetrieve();
-        // $.get( "/version", function( data ) {
-        //     console.log(data);
-        //     $('#version').html('Version: ' + data.version);
-        // });                
+        $.ajax( 
+            {
+                url: "/soap/retrieve", 
+                dataType: "json", 
+                success: function( data ) {
+                    console.info(data);
+                    // var datasrctmp = $('#datasrc').val();
+                    // console.log('datascrtmp==========>'+ $('#datasrc').val());
+                    $('#datasource option').remove();
+                    $("#datasource").append("<option value=''>请选择数据源...</option>");
+                    for(var i in data){
+                        // console.log(data[i]);
+                        $("#datasource").append("<option value='"+data[i].key+"'>"+data[i].name+"</option>");
+                    }  
+                    $('#datasource').find('option[value='+ selectedDE +']').attr('selected', 'selected');
+                    // $("#datasource").val(datasrctmp);    
+                 }
+            }
+        ) 
+        $.ajax( 
+            {
+                url: "/soap/temps", 
+                dataType: "json", 
+                success: function( data ) {
+                    console.info(data);
+                    // var etmp = $('#etmp').val();
+                    // console.log('emailtemp==========>' + $('#etmp').val());
+                    $('#emailtemp option').remove();
+                    $("#emailtemp").append("<option value=''>邮件模版...</option>");
+                    for(var i in data){
+                        // console.log(data[i]);
+                        $("#emailtemp").append("<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                    $('#emailtemp').find('option[value='+ emailtmp +']').attr('selected', 'selected');
+                    // $("#emailtemp").val(etmp);
+                 }
+            }
+        )              
 
         // If there is no priority selected, disable the next button
         if (!priority) {
             connection.trigger('updateButton', { button: 'next', enabled: false });
         }
-
-        $('#selectPriority').find('option[value='+ priority +']').attr('selected', 'selected');
-        $('#selectPriority1').find('option[value='+ selectedDE +']').attr('selected', 'selected');
+        $('#smstemp').val(smsMsg);
+        $('#selectmodel').find('option[value='+ priority +']').attr('selected', 'selected');
+        if ($('#selectmodel').val() == 2) {
+                $("#section3").hide();
+                $("#section4").show();
+            } else if($('#selectmodel').val() == 1){
+                $("#section3").show();
+                $("#section4").hide();
+            } else {
+                $("#section3").hide();
+                $("#section4").hide();
+            }
+        
+        // for(var s in fetchEmails.fetchTmpNames('templates')){
+        //     $('#emailtemp').append("<option value='"+s+"'>"+s+"</option>");
+        // }
+        
         gotoStep(step);
         
     });
@@ -90,8 +139,8 @@ define( function( require ) {
         connection.trigger('requestEndpoints');
 
         // Disable the next button if a value isn't selected
-        $('#selectPriority').change(function() {
-            var priority = getPriority();
+        $('#selectmodel').change(function() {
+            var priority = getModel();
             connection.trigger('updateButton', { button: 'next', enabled: Boolean(priority) });
         });
     };
@@ -101,12 +150,15 @@ define( function( require ) {
         switch(step) {
             case 1:
                 $('#step1').show();
-                connection.trigger('updateButton', { button: 'next', text: 'next', enabled: Boolean(getPriority()) });
+                connection.trigger('updateButton', { button: 'next', text: 'next', enabled: Boolean(getModel()) });
                 connection.trigger('updateButton', { button: 'back', visible: false });
                 break;
             case 2:
                 $('#step2').show();
-                $('#showPriority').html(getPriority());
+                $('#showModel').html($('#selectmodel').find('option:selected').text().trim());
+                $('#showDataSource').html($('#datasource').find('option:selected').text().trim());
+                $('#showEmail').html($('#emailtemp').find('option:selected').text().trim());
+                $('#showSMS').html($('#smstemp').val());
                 connection.trigger('updateButton', { button: 'back', visible: true });
                 connection.trigger('updateButton', { button: 'next', text: 'done', visible: true });
                 break;
@@ -116,13 +168,14 @@ define( function( require ) {
         }
     };
 
-    function getPriority() {
-        return $('#selectPriority').find('option:selected').attr('value').trim();
+    function getModel() {
+        return $('#selectmodel').find('option:selected').attr('value').trim();
     };
+
 
     function save() {
 
-        var value = getPriority();
+        var value = getModel();
 
         // toJbPayload is initialized on populateFields above.  Journey Builder sends an initial payload with defaults
         // set by this activity's config.json file.  Any property may be overridden as desired.
@@ -132,19 +185,23 @@ define( function( require ) {
         // toJbPayload['arguments'].execute.inArguments.push({"priority": value});
         // {{Contact.Attribute."Huawei_Free15Days_3DaysNotPaid_Opportunity"."customerid"}}
         var inArguments = [], param = '{{Contact.Attribute.<selectedDataExtension>.<selectedMode>}}';
-        var selectPriority = $('#selectPriority').val();
-        var priorityObj = {'priority' : selectPriority};
+        var selectmodel = $('#selectmodel').val();
+        var priorityObj = {'model' : selectmodel};
         inArguments.push(priorityObj);
-        param = param.replace('<selectedDataExtension>', $('#selectPriority1').val());
-        if(selectPriority == 1) {
+        inArguments.push({'datasource':$('#datasource').val()});
+        param = param.replace('<selectedDataExtension>', $('#datasource').val());
+        if(selectmodel == 1) {
             param = param.replace('<selectedMode>', 'email_address');
         }else {
             param = param.replace('<selectedMode>', 'phone');
         }
         var selectedSource = {'emailAddress' : param};
+        console.log(selectedSource);
         // var selectedSource = {'emailAddress' : '{{InteractionDefaults.Email}}'}
         // var selectedSource = {'emailAddress' : '{{Contact.Attribute.CSB_Test.emaill_address}}'};
         inArguments.push(selectedSource);
+        inArguments.push({'smsMsg':$('#smstemp').val()});
+        inArguments.push({'emailtmp':$('#emailtemp').val()});
         console.log(inArguments);
         toJbPayload.arguments.execute.inArguments = inArguments;
 
