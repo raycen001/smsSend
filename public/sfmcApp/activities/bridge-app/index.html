@@ -61,8 +61,6 @@
             <button class="btn btn-outline-secondary" type="button">选择发送模式</button>
           </div>
           <select class="custom-select" id="selectmodel">
-            <option selected value=''>请选择模式...</option>
-            <option value="1">邮件</option>
             <option value="2">短信</option>
           </select>
         </div>
@@ -76,16 +74,7 @@
             </select>
         </div>
         <input type="hidden" id="etmp"/>
-        <div class="input-group mb-3" id="section3" style="display: none">
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="button">邮件模版</button>
-            </div>
-            <select class="custom-select" id="emailtemp">
-                <option selected value=''>邮件模版...</option>
-            </select>
-        </div>
-
-        <div class="input-group" id="section4" style="display: none">
+        <div class="input-group" id="section4" style="display: block">
           <div class="input-group-prepend">
             <span class="input-group-text">短信模版</span>
           </div>
@@ -128,9 +117,6 @@
             }
         });
         var ajaxbg = $("#background,#progressBar");
-        
-
-        
     });
 </script>
 </body>
