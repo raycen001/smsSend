@@ -2,8 +2,8 @@
 var FuelSoap = require('fuel-soap');
 
 var APIKeys = {
-    clientId        : 'eki1xghk0vixs3nk3u0362zj1',
-    clientSecret    : 'g7Kb0qsn7NHhzqgLD2uWFEQh1',
+    clientId        : '7qbecky52s3x1x4x1pgxwvh9',
+    clientSecret    : 'bCZ0YEgPK5akWiII6hPkMQ39',
     soapEndpoint    : 'https://webservice.s10.exacttarget.com/Service.asmx',
     dataExtension   : '',
     customerKey     : '',
